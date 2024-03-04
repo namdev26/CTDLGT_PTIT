@@ -1,39 +1,68 @@
 #include <iostream>
-using namespace std;
-// Function to find majority element
-int findMajority(int arr[], int n)
-{
-    int i, candidate = -1, votes = 0;
-    // Finding majority candidate
-    for (i = 0; i < n; i++) {
-        if (votes == 0) {
-            candidate = arr[i];
-            votes = 1;
-        }
-        else {
-            if (arr[i] == candidate)
-                votes++;
-            else
-                votes--;
-        }
-    }
+#include <algorithm>
+
+// Hàm đếm số cặp (i, j) sao cho A[i] + A[j] = K
+int countPairsWithSumK(int a[], int n, int k) {
     int count = 0;
-    // Checking if majority candidate occurs more than n/2
-    // times
-    for (i = 0; i < n; i++) {
-        if (arr[i] == candidate)
-            count++;
+
+    // Sắp xếp dãy số để sử dụng con trỏ
+    std::sort(a, a + n);
+
+    for (int i = 0; i < n - 1; i++) {
+        int left = i + 1;  // Bắt đầu từ phần tử sau a[i]
+        int right = n - 1;
+
+        // Duyệt dãy số với hai con trỏ
+        while (left < right) {
+            int currentSum = a[left] + a[right];
+
+            if (currentSum == k) {
+                count++;
+                left++;
+
+                // Kiểm tra phần tử trùng nhau ở bên trái
+                while (left < right && a[left] == a[left - 1]) {
+                    left++;
+                }
+
+                right--;
+                // Kiểm tra phần tử trùng nhau ở bên phải
+                while (left < right && a[right] == a[right + 1]) {
+                    right--;
+                }
+            } else if (currentSum < k) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        // Kiểm tra phần tử trùng nhau ở a[i]
+        while (i < n - 1 && a[i] == a[i + 1]) {
+            i++;
+        }
     }
- 
-    if (count > n / 2)
-        return candidate;
-    return -1;
+
+    return count;
 }
-int main()
-{
-    int arr[] = { 3, 3, 4 ,2, 4, 4, 2, 4, 4 };
-    int n = sizeof(arr) / sizeof(arr[0]);
-    int majority = findMajority(arr, n);
-    cout << " The majority element is : " << majority;
+
+int main() {
+    int t;
+    std::cin >> t;
+
+    while (t--) {
+        int n, k;
+        std::cin >> n >> k;
+
+        int a[n];
+        for (int i = 0; i < n; i++) {
+            std::cin >> a[i];
+        }
+
+        int result = countPairsWithSumK(a, n, k);
+
+        std::cout << "So luong cap (i, j) sao cho A[i] + A[j] = K la: " << result << std::endl;
+    }
+
     return 0;
 }

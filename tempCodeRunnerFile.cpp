@@ -1,68 +1,51 @@
 #include <iostream>
-#include <algorithm>
+#include <vector>
 
-// Hàm đếm số cặp (i, j) sao cho A[i] + A[j] = K
-int countPairsWithSumK(int a[], int n, int k) {
-    int count = 0;
-
-    // Sắp xếp dãy số để sử dụng con trỏ
-    std::sort(a, a + n);
-
-    for (int i = 0; i < n - 1; i++) {
-        int left = i + 1;  // Bắt đầu từ phần tử sau a[i]
-        int right = n - 1;
-
-        // Duyệt dãy số với hai con trỏ
-        while (left < right) {
-            int currentSum = a[left] + a[right];
-
-            if (currentSum == k) {
-                count++;
-                left++;
-
-                // Kiểm tra phần tử trùng nhau ở bên trái
-                while (left < right && a[left] == a[left - 1]) {
-                    left++;
-                }
-
-                right--;
-                // Kiểm tra phần tử trùng nhau ở bên phải
-                while (left < right && a[right] == a[right + 1]) {
-                    right--;
-                }
-            } else if (currentSum < k) {
-                left++;
-            } else {
-                right--;
+void quickSort(std::vector<int>& arr, int low, int high) {
+    if (low < high) {
+        // Partition
+        int pivot = arr[low];
+        int i = low + 1, j = high;
+        while (i <= j) {
+            while (i <= j && arr[i] <= pivot) {
+                i++;
+            }
+            while (i <= j && arr[j] >= pivot) {
+                j--;
+            }
+            if (i < j) {
+                std::swap(arr[i], arr[j]);
             }
         }
+        std::swap(arr[low], arr[j]);
 
-        // Kiểm tra phần tử trùng nhau ở a[i]
-        while (i < n - 1 && a[i] == a[i + 1]) {
-            i++;
-        }
+        // Recursive calls
+        quickSort(arr, low, j - 1);
+        quickSort(arr, j + 1, high);
     }
-
-    return count;
 }
 
 int main() {
-    int t;
-    std::cin >> t;
+    int n;
+    std::cout << "Nhap so phan tu cua day: ";
+    std::cin >> n;
 
-    while (t--) {
-        int n, k;
-        std::cin >> n >> k;
+    std::vector<int> a(n);
+    
+    std::cout << "Nhap cac phan tu cua day: ";
+    for (int i = 0; i < n; ++i) {
+        std::cin >> a[i];
+    }
 
-        int a[n];
-        for (int i = 0; i < n; i++) {
-            std::cin >> a[i];
-        }
+    // Sắp xếp dãy số bằng thuật toán QuickSort
+    quickSort(a, 0, n - 1);
 
-        int result = countPairsWithSumK(a, n, k);
-
-        std::cout << "So luong cap (i, j) sao cho A[i] + A[j] = K la: " << result << std::endl;
+    // In dãy số sau khi sắp xếp
+    std::cout << "Day so sau khi sap xep: ";
+    for (int i = 0; i < n; ++i) {
+        std::cout << a[i] << " ";
     }
 
     return 0;
 }
+ 

@@ -7,21 +7,18 @@ int main(){
     for ( int i =0; i < n; i++){
         cin >> a[i];
     }
-    for ( int i =0; i < n; i++){
-        int ok =0;
-        for ( int j =0; j < n-i-1; j++){
-            if (a[j] > a[j+1]){
-                swap(a[j], a[j+1]);
-                ok = 1;
+    for ( int i =0; i < n-1; i++){
+        int viTriMin =i;
+        for ( int j =i+1; j < n; j++){
+            if (a[viTriMin] > a[j]){
+                viTriMin = j;
             }
         }
-        if (ok ==0){
-            break;
-        }
+        swap(a[i], a[viTriMin]);
         cout << "Buoc " << i+1 << ": ";
         for ( int i =0; i < n; i++){
             cout << a[i] << " ";
         }
         cout << endl;
-    }   
+    }
 }

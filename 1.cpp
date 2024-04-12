@@ -1,31 +1,31 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
-int main (){
-    vector <vector<string>> v;
-    int n; cin >> n;
-    string c;
-    vector <string> s(n);
-    int x[n];
-    for ( int i =0; i < n; i++){
-        cin >> s[i];
-        x[i] = i;
+const int mod = 123456789;
+
+long long poww(long long n, long long k) {
+    cout << "Debug: n = " << n << ", k = " << k << endl;
+    if (k == 1)
+        return n;
+    long long x = poww(n, k / 2);
+    cout << "Debug: x = " << x << endl;
+    if (k % 2 == 0) {
+        cout << "Debug: k is even" << endl;
+        long long result = (x * x) % mod;
+        cout << "Debug: result = " << result << endl;
+        return result;
+    } else {
+        cout << "Debug: k is odd" << endl;
+        long long result = (((x * x) % mod) * n) % mod;
+        cout << "Debug: result = " << result << endl;
+        return result;
     }
-    cin >> c;
-    do {
-        if (s[x[0]] == c){
-            vector <string> b(n);
-            for ( int i =0; i < n; i++){
-                b[i] = s[x[i]];
-            }
-            v.push_back(b);
-        }
-    } while(next_permutation(x, x+ n)); // corrected line
-    sort(v.begin(), v.end());
-    for (auto it : v){
-        for (auto j : it){
-            cout << j << " ";
-        }
-        cout << endl;
-    }
+}
+
+int main() {
+    long long n, k;
+    cout << "Enter n and k: ";
+    cin >> n >> k;
+    cout << "Result: " << poww(n, k) << endl;
+    return 0;
 }

@@ -1,31 +1,44 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-const int mod = 123456789;
-
-long long poww(long long n, long long k) {
-    cout << "Debug: n = " << n << ", k = " << k << endl;
-    if (k == 1)
-        return n;
-    long long x = poww(n, k / 2);
-    cout << "Debug: x = " << x << endl;
-    if (k % 2 == 0) {
-        cout << "Debug: k is even" << endl;
-        long long result = (x * x) % mod;
-        cout << "Debug: result = " << result << endl;
-        return result;
-    } else {
-        cout << "Debug: k is odd" << endl;
-        long long result = (((x * x) % mod) * n) % mod;
-        cout << "Debug: result = " << result << endl;
-        return result;
-    }
-}
-
-int main() {
-    long long n, k;
-    cout << "Enter n and k: ";
+int main(){
+    int n , k;
     cin >> n >> k;
-    cout << "Result: " << poww(n, k) << endl;
-    return 0;
+    cin.ignore();
+    string x;
+    map <string , int > m;
+    vector <string> v;
+    for ( int i =0; i < n; i++){
+        cin >> x;
+        m[x]++;
+    }
+    for (auto i : m){
+        v.push_back(i.first);
+    }
+    n = v.size();
+    v.insert(v.begin(), 1, "");
+    int dd[k +1];
+    for (int i =1; i <= k; i++){
+        dd[i] = i;
+    }
+    while(1){
+        for ( int i =1; i <= k; i++){
+            cout << v[dd[i]] << " ";
+        }
+        cout << endl;
+        int ok =0;
+        for ( int i = k ; i >= 1; i--){
+            if (dd[i] != n - k + i){
+                ok =1;
+                dd[i]++;
+                for ( int j = i+1; j <= k; j++){
+                    dd[j] = dd[j-1] + 1;
+                }
+                break;
+            }
+        }
+        if (ok ==0){
+            return 0;
+        }
+    }
 }
